@@ -1,7 +1,0 @@
-# PostgreSQL
-# ------------------------------------------------------------------------------
-POSTGRES_HOST=postgres
-POSTGRES_PORT=5432
-POSTGRES_DB=gishe_clone
-POSTGRES_USER=yKmkBoyyHgcKOgfghwfracGEdyfJjoQt
-POSTGRES_PASSWORD=WchnEyBcarEnBAgzJVZrX8GorAnAWJG5RROJHKrjQLFej0jklaaUQ7trvGsG0Cjl
