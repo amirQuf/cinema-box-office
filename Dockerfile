@@ -1,23 +1,27 @@
-# This file is a template, and might need editing before it works on your project.
-FROM python:3.6
+FROM python:3.8
+LABEL CREATOR="AMIRAJOODANI | https://nextsysadmin.ir"
 
-# Edit with mysql-client, postgresql-client, sqlite3, etc. for your needs.
-# Or delete entirely if not needed.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+ENV PYTHONUNBUFFERED 1
+ENV DJANGO_SUPERUSER_PASSWORD Nocnoc123456
 
-WORKDIR /usr/src/app
 
-COPY requirements.txt /usr/src/app/
-RUN pip install --no-cache-dir -r requirements.txt
+# Set working directory
+RUN mkdir /app
+WORKDIR /app
+COPY . /app
 
-COPY . /usr/src/app
+# Installing requirements
+ADD requirements/req.txt /app
+RUN pip3 install --upgrade pip
+RUN pip3 install -r req.txt
+RUN pip3 install django gunicorn
 
-# For Django
-EXPOSE 8000
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-# For some other command
-# CMD ["python", "app.py"]
+# Collect static files
+
+
+CMD python3 manage.py makemigrations --no-input && \
+    python3 manage.py migrate --no-input && \
+    python3 manage.py collectstatic --no-input && \
+    python3 manage.py createsuperuser --user admin --email admin@localhost --no-input; \
+    gunicorn -b 0.0.0.0:8000 config.wsgi
